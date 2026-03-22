@@ -12,6 +12,9 @@ wheels/
 # personal documentation
 NOTES.md
 
+# VS Code Configurations
+.vscode/
+
 # experiment files
 tp.py
 tp.ipynb
