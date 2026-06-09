@@ -15,6 +15,7 @@ NOTES.md
 # VS Code Configurations
 .vscode/
 
-# experiment files
+# experiment files and folders
+tp/
 tp.py
 tp.ipynb
