@@ -1,33 +1,39 @@
-import cv2
-import matplotlib.pyplot as plt
-from pathlib import Path
 import math
+from pathlib import Path
+import matplotlib.pyplot as plt
+import cv2
+
+# ==== ==== ==== ====
 
 def get_img():
     name = input("enter image file name with extension: ")
     return name
 
+# -- -- -- --
 
 def load_img(name):
     
-    script_dir = Path(__file__).resolve().parent
-    img_path = script_dir / "images" / name
+    proj_dir = Path(__file__).resolve().parent
+    img_path = proj_dir / "images" / name
 
     img = cv2.imread(str(img_path))
     if img is None:
         raise FileNotFoundError("could not find the image")
     return img
 
+# -- -- -- --
 
 def convert_rgb(bgr_img):
     rgb_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2RGB)
     return rgb_img
 
+# -- -- -- --
 
 def convert_gray(bgr_img):
     gray_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
     return gray_img
 
+# -- -- -- --
 
 def plot_imgs(*imgs, titles=None):
 
@@ -39,10 +45,10 @@ def plot_imgs(*imgs, titles=None):
     
     fig, axes = plt.subplots(math.ceil(num_imgs / 3), min(3, num_imgs), figsize=(2 * min(num_imgs, 3), 2 * math.ceil(num_imgs / 3)))
 
-    # if there's only 1 plot, plt.subplot returns only a single Axes object and not a list of axes of objects. Hence we convert it to list
+    # convert axes to list if it's not already
     if num_imgs == 1:
         axes = [axes]
-    else:
+    else:       # for more than 3 images
         axes = axes.flatten()
 
     for i, img in enumerate(imgs):
@@ -60,18 +66,37 @@ def plot_imgs(*imgs, titles=None):
     plt.show()
 
 
+def save_img(img, name, ext):
+    """saves img as name.ext in outputs/. the image must be in BGR format"""
+
+    proj_dir = Path(__file__).resolve().parent
+    op_dir = proj_dir / 'outputs'
+    op_dir.mkdir(parents=True, exist_ok=True)
+    file_path = op_dir / f"{name}.{ext}"
+
+    success = cv2.imwrite(f"{str(file_path)}", img)
+
+    if success:
+        print(f"{name}.{ext} saved successfully at {str(op_dir)}")
+    else:
+        print("failed to save file")
+
+
 def main():
     try:
         name = get_img()
         image = load_img(name)
     except FileNotFoundError:
-        print("Could not find image. Make sure you entered the correct file name and the file is inside images/ folder.")
+        print("could not find image")
         return
     
-    img_rgb = convert_rgb(image)
-    img_gray = convert_gray(image)
+    save_img(image, "orig_img", "png")
 
-    plot_imgs(image, img_rgb, img_gray, image, image, titles = ['BGR', 'RGB', 'Grayscale'])
+    img_gray = convert_gray(image)
+    save_img(img_gray, "gray_img", "png")
+
+
+    plot_imgs(cv2.cvtColor(image, cv2.COLOR_BGR2RGB), img_gray, image, titles = ['Original', 'Grayscale', 'BR inverted'])
 
 
 if __name__ == "__main__":
