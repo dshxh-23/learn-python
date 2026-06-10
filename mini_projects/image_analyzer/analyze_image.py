@@ -33,7 +33,7 @@ def convert_gray(bgr_img):
     gray_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
     return gray_img
 
-# -- -- -- --
+# ---- ----  ----  ----
 
 def plot_imgs(*imgs, titles=None):
 
@@ -65,6 +65,7 @@ def plot_imgs(*imgs, titles=None):
     plt.tight_layout()
     plt.show()
 
+# -- -- -- --
 
 def save_img(img, name, ext):
     """saves img as name.ext in outputs/. the image must be in BGR format"""
@@ -81,6 +82,7 @@ def save_img(img, name, ext):
     else:
         print("failed to save file")
 
+# ==== ==== ==== ====
 
 def main():
     try:
