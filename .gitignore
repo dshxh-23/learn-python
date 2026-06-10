@@ -19,3 +19,9 @@ NOTES.md
 tp/
 tp.py
 tp.ipynb
+
+# data files and outputs
+data/
+images/
+videos/
+outputs/
